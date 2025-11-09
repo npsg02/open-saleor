@@ -1,0 +1,23 @@
+version: '3.8'
+
+# Complete stack including storefront
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.full.yml up
+
+services:
+  storefront:
+    build:
+      context: ./storefront
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/graphql/
+    depends_on:
+      - api
+    networks:
+      - saleor-network
+
+networks:
+  saleor-network:
+    external: true
